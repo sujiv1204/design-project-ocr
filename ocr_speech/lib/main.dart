@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+// import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
@@ -216,13 +217,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void getRecognisedText(XFile image) async {
     final inputImage = InputImage.fromFilePath(image.path);
-    final textDetector = GoogleMlKit.vision.textDetector();
-    RecognisedText recognisedText = await textDetector.processImage(inputImage);
-    await textDetector.close();
+    // final textDetector = GoogleMlKit.vision.textDetector();
+    final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+    final recognisedText = await textRecognizer.processImage(inputImage);
+    await textRecognizer.close();
     scannedText = "";
     for (TextBlock block in recognisedText.blocks) {
       for (TextLine line in block.lines) {
-        scannedText = scannedText + line.text + "\n";
+        scannedText = "$scannedText${line.text}\n";
       }
     }
     textScanning = false;
