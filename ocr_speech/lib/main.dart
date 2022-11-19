@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:tflite/tflite.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,7 +35,8 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  bool _busy = false;
   FlutterTts ftts = FlutterTts();
   bool textScanning = false;
 
@@ -46,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Text Recognition example"),
+        title: const Text("Text Recognition Application"),
       ),
       body: Center(
           child: SingleChildScrollView(
@@ -205,7 +208,8 @@ class _MyHomePageState extends State<MyHomePage> {
         textScanning = true;
         imageFile = pickedImage;
         setState(() {});
-        getRecognisedText(pickedImage);
+        predictImage(pickedImage);
+        // getRecognisedText(pickedImage);
       }
     } catch (e) {
       textScanning = false;
@@ -213,6 +217,72 @@ class _MyHomePageState extends State<MyHomePage> {
       scannedText = "Error occured while scanning";
       setState(() {});
     }
+  }
+
+  loadModel() async {
+    Tflite.close();
+    try {
+      String res = await Tflite.loadModel(
+            model: "assets/tflite/model.tflite",
+            labels: "assets/tflite/labels.txt",
+          ) ??
+          '';
+    } on PlatformException {
+      print("Failed to load the model");
+    }
+  }
+
+  void predictImage(XFile image) async {
+    await classify(image);
+    // setState(() {});
+  }
+
+  late List _recognitions;
+  String val0 = "";
+  String val1 = "";
+
+  classify(XFile image) async {
+    var recognitions = await Tflite.runModelOnImage(
+        path: image.path, // required
+        imageMean: 0.0, // defaults to 117.0
+        imageStd: 255.0, // defaults to 1.0
+        numResults: 2, // defaults to 5
+        threshold: 0.2, // defaults to 0.1
+        asynch: true // defaults to true
+        );
+    _recognitions = recognitions ?? [];
+    // print(_recognitions);
+    if (_recognitions[0]['label'].toString() == "BLUR") {
+      // _selected0 = "BLUR";
+      val0 = '${(_recognitions[0]["confidence"] * 100)}';
+    } else {
+      // _selected0 = '';
+      val0 = '${(100 - (_recognitions[0]["confidence"] * 100))}';
+    }
+
+    if (_recognitions[0]['label'].toString() == "SHARP") {
+      // _selected1 = "SHARP";
+      val1 = '${(_recognitions[0]["confidence"] * 100)}';
+    } else {
+      // _selected1 = "";
+      val1 = '${(100 - (_recognitions[0]["confidence"] * 100))}';
+    }
+    var v1 = double.parse(val0);
+    var v2 = double.parse(val1);
+    // print(v1);
+    // print(v2);
+    print('The values are: ${[val0, val1]}');
+    print('The values2 are: ${[v1, v2]}');
+    if (v2 > 60) {
+      print("sharp");
+      getRecognisedText(image);
+    } else {
+      print("blur");
+      scannedText = "Please take picture again";
+      getSpeech(scannedText);
+      textScanning = false;
+    }
+    setState(() {});
   }
 
   void getRecognisedText(XFile image) async {
@@ -228,7 +298,13 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
     textScanning = false;
-    //your custom configuration
+    getSpeech(scannedText);
+    setState(() {});
+  }
+
+  void getSpeech(scannedText) async {
+    await ftts.stop();
+//your custom configuration
     await ftts.setLanguage("en-US");
     await ftts.setSpeechRate(0.5); //speed of speech
     await ftts.setVolume(1.0); //volume of speech
@@ -241,11 +317,19 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       //not speaking
     }
-    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
+    _busy = true;
+
+    loadModel().then((val) {
+      setState(() {
+        _busy = false;
+        scannedText = "Tflite module loded";
+        print("loded");
+      });
+    });
   }
 }
