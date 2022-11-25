@@ -7,6 +7,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:tflite/tflite.dart';
 import 'package:flutter/services.dart';
+// import 'package:simple_edge_detection/edge_detection.dart';
+// import 'package:ocr_speech/';
+import 'package:ocr_speech/pages/speech_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +26,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const MyHomePage(),
+      //   home: const MyHomePage(),
+      routes: {
+        '/': (context) => const MyHomePage(),
+        '/speech': (context) => const SpeechPage(),
+      },
     );
   }
 }
@@ -151,19 +158,21 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           ),
                           onPressed: () async {
                             //your custom configuration
-                            await ftts.setLanguage("en-US");
-                            await ftts.setSpeechRate(0.5); //speed of speech
-                            await ftts.setVolume(1.0); //volume of speech
-                            await ftts.setPitch(1); //pitc of sound
+                            // await ftts.setLanguage("en-US");
+                            // await ftts.setSpeechRate(0.5); //speed of speech
+                            // await ftts.setVolume(1.0); //volume of speech
+                            // await ftts.setPitch(1); //pitc of sound
 
-                            //play text to sp
-                            var result = await ftts
-                                .speak("Hello World, this is Flutter Campus.");
-                            if (result == 1) {
-                              //speaking
-                            } else {
-                              //not speaking
-                            }
+                            // //play text to sp
+                            // var result = await ftts
+                            //     .speak("Hello World, this is Flutter Campus.");
+                            // if (result == 1) {
+                            //   //speaking
+                            // } else {
+                            //   //not speaking
+                            // }
+                            Navigator.pushNamed(context, '/speech',
+                                arguments: {"text": scannedText});
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
@@ -172,11 +181,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(
-                                  Icons.camera_alt,
+                                  Icons.repeat,
                                   size: 30,
                                 ),
                                 Text(
-                                  "Camera",
+                                  "Repeat",
                                   style: TextStyle(
                                       fontSize: 13, color: Colors.grey[600]),
                                 )
@@ -204,6 +213,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void getImage(ImageSource source) async {
     try {
       final pickedImage = await ImagePicker().pickImage(source: source);
+      // final filePath = pickedImage?.path;
+      // EdgeDetectionResult result = await EdgeDetector().detectEdges(filePath);
+      // print(result);
       if (pickedImage != null) {
         textScanning = true;
         imageFile = pickedImage;
@@ -298,7 +310,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       }
     }
     textScanning = false;
-    getSpeech(scannedText);
+    // getSpeech(scannedText);
+    if (scannedText == "") {
+      getSpeech("No text found. Please take picture again");
+    } else {
+      if (!mounted) return;
+      Navigator.pushNamed(context, '/speech', arguments: {"text": scannedText});
+    }
+
     setState(() {});
   }
 
@@ -333,3 +352,78 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     });
   }
 }
+// import 'package:flutter/material.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
+
+// void main() {
+//   runApp(const MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
+
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       theme: ThemeData(
+//         primarySwatch: Colors.green,
+//       ),
+//       home:  Component1Widget(),
+//     );
+//   }
+// }
+
+// class Component1Widget extends StatefulWidget {
+//   @override
+//   _Component1WidgetState createState() => _Component1WidgetState();
+// }
+
+// class _Component1WidgetState extends State<Component1Widget> {
+//   @override
+//   Widget build(BuildContext context) {
+//     // Figma Flutter Generator Component1Widget - COMPONENT
+
+//     // var SvgPicture;
+//     return Container(
+//         width: 168,
+//         height: 341,
+//         child: Stack(children: <Widget>[
+//           Positioned(
+//               top: 0,
+//               left: 0,
+//               child: Container(
+//                   width: 168,
+//                   height: 341,
+//                   decoration: BoxDecoration(
+//                     color: Color.fromRGBO(247, 253, 255, 1),
+//                   ))),
+//           Positioned(
+//               top: 85,
+//               left: 14,
+//               child: SvgPicture.asset(
+//                 'assets/rectangle6.svg',
+//                 semanticsLabel: 'rectangle6',
+//               )),
+//           Positioned(
+//               top: 19,
+//               left: 14,
+//               child: Container(
+//                   width: 137,
+//                   height: 26,
+//                   decoration: BoxDecoration(
+//                     color: Color.fromRGBO(217, 217, 217, 1),
+//                   ))),
+//           Positioned(
+//               top: 329,
+//               left: 0,
+//               child: Container(
+//                   width: 168,
+//                   height: 12,
+//                   decoration: BoxDecoration(
+//                     color: Color.fromRGBO(0, 0, 0, 1),
+//                   ))),
+//         ]));
+//   }
+// }

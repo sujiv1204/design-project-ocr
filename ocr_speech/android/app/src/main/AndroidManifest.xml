@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ocr_speech">
+   <uses-permission android:name="android.permission.VIBRATE"/>
    <application
         android:label="ocr_speech"
         android:name="${applicationName}"
