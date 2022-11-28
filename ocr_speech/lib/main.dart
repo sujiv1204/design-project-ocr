@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 // import 'package:simple_edge_detection/edge_detection.dart';
 // import 'package:ocr_speech/';
 import 'package:ocr_speech/pages/speech_page.dart';
+import 'package:ocr_speech/pages/responsive.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,9 +51,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   XFile? imageFile;
 
   String scannedText = "";
+  late Responsive responsive;
 
   @override
   Widget build(BuildContext context) {
+    responsive = Responsive(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -66,51 +69,19 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 if (textScanning) const CircularProgressIndicator(),
-                if (!textScanning && imageFile == null)
-                  Container(
-                    width: 300,
-                    height: 300,
-                    color: Colors.grey[300]!,
-                  ),
-                if (imageFile != null) Image.file(File(imageFile!.path)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                // if (!textScanning && imageFile == null)
+                //   Container(
+                //     width: 300,
+                //     height: 300,
+                //     color: Colors.grey[300]!,
+                //   ),
+                // if (imageFile != null) Image.file(File(imageFile!.path)),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        padding: const EdgeInsets.only(top: 10),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            onPrimary: Colors.grey,
-                            shadowColor: Colors.grey[400],
-                            elevation: 10,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0)),
-                          ),
-                          onPressed: () {
-                            getImage(ImageSource.gallery);
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 5),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.image,
-                                  size: 30,
-                                ),
-                                Text(
-                                  "Gallery",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.grey[600]),
-                                )
-                              ],
-                            ),
-                          ),
-                        )),
-                    Container(
+                        height: responsive.BlockHeight * 35,
+                        width: responsive.BlockWidth * 75,
                         margin: const EdgeInsets.symmetric(horizontal: 5),
                         padding: const EdgeInsets.only(top: 10),
                         child: ElevatedButton(
@@ -133,77 +104,146 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                               children: [
                                 Icon(
                                   Icons.camera_alt,
-                                  size: 30,
+                                  size: 50,
                                 ),
                                 Text(
                                   "Camera",
                                   style: TextStyle(
-                                      fontSize: 13, color: Colors.grey[600]),
+                                      fontSize: 20, color: Colors.grey[600]),
                                 )
                               ],
                             ),
                           ),
                         )),
-                    Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        padding: const EdgeInsets.only(top: 10),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            onPrimary: Colors.grey,
-                            shadowColor: Colors.grey[400],
-                            elevation: 10,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0)),
-                          ),
-                          onPressed: () async {
-                            //your custom configuration
-                            // await ftts.setLanguage("en-US");
-                            // await ftts.setSpeechRate(0.5); //speed of speech
-                            // await ftts.setVolume(1.0); //volume of speech
-                            // await ftts.setPitch(1); //pitc of sound
-
-                            // //play text to sp
-                            // var result = await ftts
-                            //     .speak("Hello World, this is Flutter Campus.");
-                            // if (result == 1) {
-                            //   //speaking
-                            // } else {
-                            //   //not speaking
-                            // }
-                            Navigator.pushNamed(context, '/speech',
-                                arguments: {"text": scannedText});
-                          },
-                          child: Container(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            height: responsive.BlockHeight * 25,
+                            width: responsive.BlockWidth * 40,
                             margin: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 5),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.repeat,
-                                  size: 30,
+                                horizontal: 5, vertical: 15),
+                            padding: const EdgeInsets.only(top: 10),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white,
+                                onPrimary: Colors.grey,
+                                shadowColor: Colors.grey[400],
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0)),
+                              ),
+                              onPressed: () {
+                                getImage(ImageSource.gallery);
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 5),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.image,
+                                      size: 40,
+                                    ),
+                                    Text(
+                                      "Gallery",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.grey[600]),
+                                    )
+                                  ],
                                 ),
-                                Text(
-                                  "Repeat",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.grey[600]),
-                                )
-                              ],
-                            ),
-                          ),
-                        )),
+                              ),
+                            )),
+                        Container(
+                            height: responsive.BlockHeight * 25,
+                            width: responsive.BlockWidth * 40,
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 15),
+                            padding: const EdgeInsets.only(top: 10),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white,
+                                onPrimary: Colors.grey,
+                                shadowColor: Colors.grey[400],
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0)),
+                              ),
+                              onPressed: () async {
+                                Navigator.pushNamed(context, '/speech',
+                                    arguments: {"text": scannedText});
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 5),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.repeat,
+                                      size: 40,
+                                    ),
+                                    Text(
+                                      "Repeat",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.grey[600]),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )),
+                      ],
+                    ),
                   ],
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                // const SizedBox(
+                //   height: 20,
+                // ),
+                // Container(
+                //   child: Text(
+                //     scannedText,
+                //     style: TextStyle(fontSize: 20),
+                //   ),
+                // )
                 Container(
-                  child: Text(
-                    scannedText,
-                    style: TextStyle(fontSize: 20),
-                  ),
-                )
+                    height: responsive.BlockHeight * 15,
+                    width: responsive.BlockWidth * 90,
+                    margin: const EdgeInsets.only(top: 10, bottom: 0),
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
+                        onPrimary: Colors.grey,
+                        shadowColor: Colors.grey[400],
+                        elevation: 10,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
+                      ),
+                      onPressed: () {
+                        getSpeech("You are in the Home Page");
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 5),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.help,
+                              size: 30,
+                            ),
+                            Text(
+                              "Help",
+                              style: TextStyle(
+                                  fontSize: 30, color: Colors.grey[600]),
+                            )
+                          ],
+                        ),
+                      ),
+                    )),
               ],
             )),
       )),
@@ -314,6 +354,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     if (scannedText == "") {
       getSpeech("No text found. Please take picture again");
     } else {
+      getSpeech("Text Found. Moving to next screen");
       if (!mounted) return;
       Navigator.pushNamed(context, '/speech', arguments: {"text": scannedText});
     }
@@ -352,78 +393,3 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     });
   }
 }
-// import 'package:flutter/material.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
-
-// void main() {
-//   runApp(const MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key}) : super(key: key);
-
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//         primarySwatch: Colors.green,
-//       ),
-//       home:  Component1Widget(),
-//     );
-//   }
-// }
-
-// class Component1Widget extends StatefulWidget {
-//   @override
-//   _Component1WidgetState createState() => _Component1WidgetState();
-// }
-
-// class _Component1WidgetState extends State<Component1Widget> {
-//   @override
-//   Widget build(BuildContext context) {
-//     // Figma Flutter Generator Component1Widget - COMPONENT
-
-//     // var SvgPicture;
-//     return Container(
-//         width: 168,
-//         height: 341,
-//         child: Stack(children: <Widget>[
-//           Positioned(
-//               top: 0,
-//               left: 0,
-//               child: Container(
-//                   width: 168,
-//                   height: 341,
-//                   decoration: BoxDecoration(
-//                     color: Color.fromRGBO(247, 253, 255, 1),
-//                   ))),
-//           Positioned(
-//               top: 85,
-//               left: 14,
-//               child: SvgPicture.asset(
-//                 'assets/rectangle6.svg',
-//                 semanticsLabel: 'rectangle6',
-//               )),
-//           Positioned(
-//               top: 19,
-//               left: 14,
-//               child: Container(
-//                   width: 137,
-//                   height: 26,
-//                   decoration: BoxDecoration(
-//                     color: Color.fromRGBO(217, 217, 217, 1),
-//                   ))),
-//           Positioned(
-//               top: 329,
-//               left: 0,
-//               child: Container(
-//                   width: 168,
-//                   height: 12,
-//                   decoration: BoxDecoration(
-//                     color: Color.fromRGBO(0, 0, 0, 1),
-//                   ))),
-//         ]));
-//   }
-// }

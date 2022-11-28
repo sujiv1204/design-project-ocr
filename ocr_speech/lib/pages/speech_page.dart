@@ -195,11 +195,66 @@ class _SpeechPageState extends State<SpeechPage> {
                   Button('stop', stop)
                 ],
               ),
-              SizedBox(height: responsive.BlockHeight * 20),
+              SizedBox(height: responsive.BlockHeight * 10),
               get_state() != 'TtsState.play' ? SliderRow() : Container(),
+              Container(
+                  height: responsive.BlockHeight * 15,
+                  width: responsive.BlockWidth * 90,
+                  margin: const EdgeInsets.only(top: 10, bottom: 0),
+                  padding: const EdgeInsets.only(top: 10),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white,
+                      onPrimary: Colors.grey,
+                      shadowColor: Colors.grey[400],
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0)),
+                    ),
+                    onPressed: () {
+                      getSpeech("You are in playback page");
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 5),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.help,
+                            size: 30,
+                          ),
+                          Text(
+                            "Help",
+                            style: TextStyle(
+                                fontSize: 30, color: Colors.grey[600]),
+                          )
+                        ],
+                      ),
+                    ),
+                  )),
             ],
           )),
     );
+  }
+
+  FlutterTts ftts = FlutterTts();
+
+  void getSpeech(scannedText) async {
+    await ftts.stop();
+//your custom configuration
+    await ftts.setLanguage("en-US");
+    await ftts.setSpeechRate(0.5); //speed of speech
+    await ftts.setVolume(1.0); //volume of speech
+    await ftts.setPitch(1.0); //pitch of sound
+
+    //play text to sp
+    var result = await ftts.speak(scannedText);
+    if (result == 1) {
+      //speaking
+    } else {
+      //not speaking
+    }
   }
 
   Widget SliderRow() {
