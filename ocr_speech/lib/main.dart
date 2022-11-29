@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 // import 'package:ocr_speech/';
 import 'package:ocr_speech/pages/speech_page.dart';
 import 'package:ocr_speech/pages/responsive.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 
 void main() {
   runApp(const MyApp());
@@ -52,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   String scannedText = "";
   late Responsive responsive;
+  bool _canVibrate = true;
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +96,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                 borderRadius: BorderRadius.circular(8.0)),
                           ),
                           onPressed: () {
+                            Vibration("Medium");
+
                             getImage(ImageSource.camera);
                           },
                           child: Container(
@@ -134,6 +138,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                     borderRadius: BorderRadius.circular(8.0)),
                               ),
                               onPressed: () {
+                                Vibration("Medium");
                                 getImage(ImageSource.gallery);
                               },
                               child: Container(
@@ -172,6 +177,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                     borderRadius: BorderRadius.circular(8.0)),
                               ),
                               onPressed: () async {
+                                Vibration("Medium");
+
                                 Navigator.pushNamed(context, '/speech',
                                     arguments: {"text": scannedText});
                               },
@@ -223,6 +230,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                             borderRadius: BorderRadius.circular(8.0)),
                       ),
                       onPressed: () {
+                        Vibration("Medium");
                         getSpeech("You are in the Home Page");
                       },
                       child: Container(
@@ -379,6 +387,33 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     }
   }
 
+  init_vibrate() async {
+    bool canvibrate = await Vibrate.canVibrate;
+    setState(() {
+      _canVibrate = canvibrate;
+      _canVibrate
+          ? print('Device can vibrate')
+          : print('device cannot vibrate');
+    });
+  }
+
+  Future Vibration(String text) async {
+    if (_canVibrate) {
+      // await Vibrate.vibrateWithPauses(Pauses);
+      var type = FeedbackType.light;
+      if (text == "Play") {
+        type = FeedbackType.success;
+      } else if (text == "Pause") {
+        type = FeedbackType.warning;
+      } else if (text == "Stop") {
+        type = FeedbackType.error;
+      } else if (text == "Medium") {
+        type = FeedbackType.medium;
+      }
+      Vibrate.feedback(type);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -391,5 +426,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         print("loded");
       });
     });
+    init_vibrate();
   }
 }

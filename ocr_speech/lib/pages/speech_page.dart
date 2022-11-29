@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ocr_speech/pages/responsive.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+// import 'package:flutter/services.dart';
 //import 'package:speech/speech.dart';
 
 enum TtsState { play, stop, pause, completed }
@@ -179,7 +180,7 @@ class _SpeechPageState extends State<SpeechPage> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            title: Text('Speech Generation'),
+            title: Text('Generated Speech'),
             centerTitle: true,
           ),
           body: Column(
@@ -192,10 +193,14 @@ class _SpeechPageState extends State<SpeechPage> {
                 children: [
                   Button('Play', Speak),
                   Button('Pause', pause),
-                  Button('stop', stop)
+                  Button('Stop', stop)
                 ],
               ),
               SizedBox(height: responsive.BlockHeight * 10),
+              // Text("pitch",
+              //     textAlign: TextAlign.start,
+              //     overflow: TextOverflow.ellipsis,
+              //     style: const TextStyle(fontWeight: FontWeight.bold)),
               get_state() != 'TtsState.play' ? SliderRow() : Container(),
               Container(
                   height: responsive.BlockHeight * 15,
@@ -212,6 +217,7 @@ class _SpeechPageState extends State<SpeechPage> {
                           borderRadius: BorderRadius.circular(8.0)),
                     ),
                     onPressed: () {
+                      Vibration("light");
                       getSpeech("You are in playback page");
                     },
                     child: Container(
@@ -301,10 +307,15 @@ class _SpeechPageState extends State<SpeechPage> {
             label: type,
             onChanged: ((value) {
               setState(() {
+                Vibration("Medium");
                 type == 'rate' ? rate = value : pitch = value;
               });
             }),
           )),
+      // Text(type,
+      //     textAlign: TextAlign.center,
+      //     overflow: TextOverflow.ellipsis,
+      //     style: const TextStyle(fontWeight: FontWeight.bold))
     ]);
   }
 
@@ -317,16 +328,33 @@ class _SpeechPageState extends State<SpeechPage> {
           heightFactor: 0.9,
           child: ElevatedButton(
               onPressed: () async {
-                await Vibration();
+                await Vibration(text);
+                // Vibrate.vibrate();
+
                 func();
               },
-              child: Text('$text')),
+              child: Text(
+                '$text',
+                style: TextStyle(
+                    fontSize: 20, color: Color.fromARGB(255, 255, 255, 255)),
+              )),
         ));
   }
 
-  Future Vibration() async {
+  Future Vibration(String text) async {
     if (_canVibrate) {
-      await Vibrate.vibrateWithPauses(Pauses);
+      // await Vibrate.vibrateWithPauses(Pauses);
+      var type = FeedbackType.light;
+      if (text == "Play") {
+        type = FeedbackType.success;
+      } else if (text == "Pause") {
+        type = FeedbackType.warning;
+      } else if (text == "Stop") {
+        type = FeedbackType.error;
+      } else if (text == "Medium") {
+        type = FeedbackType.medium;
+      }
+      Vibrate.feedback(type);
     }
   }
 }
