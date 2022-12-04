@@ -9,11 +9,17 @@ import 'package:flutter_tts/flutter_tts.dart';
 
 enum TtsState { play, stop, pause, completed }
 
-Iterable<Duration> Pauses = [
-  Duration(milliseconds: 100),
-  Duration(milliseconds: 500),
-  Duration(milliseconds: 700),
-];
+String Male = 'en-gb';
+String Female = 'en-us';
+
+//{name: en-us-x-tpf-local, locale: en-US}
+//{name: uk-UA-language, locale: uk-UA}
+
+// Iterable<Duration> Pauses = [
+//   Duration(milliseconds: 100),
+//   Duration(milliseconds: 500),
+//   Duration(milliseconds: 700),
+// ];
 // Iterable<Duration> Plays = [];
 // Iterable<Duration> Stops = [];
 
@@ -36,12 +42,13 @@ class SpeechPage extends StatefulWidget {
 // }
 
 class _SpeechPageState extends State<SpeechPage> {
+  bool ismale = true;
   late FlutterTts Tts;
 
   String? input_text;
   String? recognisedText;
 
-  double volume = 1.5;
+  double volume = 1.0;
   double rate = 0.5;
   double pitch = 1.0;
   TtsState state = TtsState.stop;
@@ -52,6 +59,10 @@ class _SpeechPageState extends State<SpeechPage> {
   @override
   void initState() {
     super.initState();
+    print("-------------------------");
+    print("In init function");
+    print("-------------------------");
+    //Tts.setLanguage(Male);
 
     // init_Tts();
     // init_vibrate();
@@ -63,10 +74,17 @@ class _SpeechPageState extends State<SpeechPage> {
     // put your logic from initState here
     final args = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
+    print(args);
     recognisedText = args['text'];
+    // if (recognisedText == ' ') {
+    //   print('In null');
+    //   recognisedText = "No Text Found, Please take picture again";
+    // }
+    ismale = args['ismale'];
     // print(recognisedText);
     init_Tts();
     init_vibrate();
+    //set_voice();
   }
 
   Feed_data() {
@@ -121,6 +139,35 @@ class _SpeechPageState extends State<SpeechPage> {
     Feed_data();
   }
 
+  // Future get_voice() async {
+  //   final voices = await Tts.getVoices;
+  //   print(voices);
+  // }
+
+  void set_voice() {
+    if (ismale) {
+      print('change to female');
+      getSpeech("Voice Changed to female");
+      setState(() {
+        Tts.setLanguage(Female);
+        ismale = false;
+      });
+    } else {
+      print('change to male');
+      getSpeech("Voice Changed to male");
+      setState(() {
+        Tts.setLanguage(Male);
+        ismale = true;
+      });
+    }
+    // var voice = await Tts.getDefaultVoice;
+    // print(voice);
+    // // print('Type :${voice.runtimeType}');
+
+    // await Tts.setLanguage('en-US');
+    // setState(() {});
+  }
+
   Future Speak() async {
     print('In speak');
     await Tts.setVolume(volume);
@@ -129,7 +176,7 @@ class _SpeechPageState extends State<SpeechPage> {
 
     await setAwaitOptions();
 
-    if (input_text != null) {
+    if (input_text != Null) {
       if (input_text!.isNotEmpty) {
         //await Future.delayed(Duration(seconds: 10));
         print('after delay');
@@ -182,64 +229,84 @@ class _SpeechPageState extends State<SpeechPage> {
           appBar: AppBar(
             title: Text('Generated Speech'),
             centerTitle: true,
+            leading: IconButton(
+                icon: Icon(Icons.chevron_left),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/',
+                      arguments: {"ismale": ismale, "scannedText": input_text});
+                  Tts.stop();
+                }),
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Button('Play', Speak),
-                  Button('Pause', pause),
-                  Button('Stop', stop)
-                ],
-              ),
-              SizedBox(height: responsive.BlockHeight * 10),
-              // Text("pitch",
-              //     textAlign: TextAlign.start,
-              //     overflow: TextOverflow.ellipsis,
-              //     style: const TextStyle(fontWeight: FontWeight.bold)),
-              get_state() != 'TtsState.play' ? SliderRow() : Container(),
-              Container(
-                  height: responsive.BlockHeight * 15,
-                  width: responsive.BlockWidth * 90,
-                  margin: const EdgeInsets.only(top: 10, bottom: 0),
-                  padding: const EdgeInsets.only(top: 10),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
-                      onPrimary: Colors.grey,
-                      shadowColor: Colors.grey[400],
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0)),
-                    ),
-                    onPressed: () {
-                      Vibration("light");
-                      getSpeech("You are in playback page");
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 5),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.help,
-                            size: 30,
-                          ),
-                          Text(
-                            "Help",
-                            style: TextStyle(
-                                fontSize: 30, color: Colors.grey[600]),
-                          )
-                        ],
+          body: WillPopScope(
+            onWillPop: () async {
+              Navigator.pushNamed(context, '/',
+                  arguments: {"ismale": ismale, "scannedText": input_text});
+              Tts.stop();
+              return false;
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Button('Play', Speak),
+                    Button('Pause', pause),
+                    Button('Stop', stop)
+                  ],
+                ),
+                SizedBox(height: responsive.BlockHeight * 10),
+                // Text("pitch",
+                //     textAlign: TextAlign.start,
+                //     overflow: TextOverflow.ellipsis,
+                //     style: const TextStyle(fontWeight: FontWeight.bold)),
+                // Container(
+                //   child: Button('get voice', set_voice),
+                // ),
+
+                get_state() != 'TtsState.play' ? SliderRow() : Container(),
+                Container(
+                    height: responsive.BlockHeight * 15,
+                    width: responsive.BlockWidth * 90,
+                    margin: const EdgeInsets.only(top: 10, bottom: 0),
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
+                        onPrimary: Colors.grey,
+                        shadowColor: Colors.grey[400],
+                        elevation: 10,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
                       ),
-                    ),
-                  )),
-            ],
+                      onPressed: () {
+                        Vibration("light");
+                        getSpeech(
+                            "You are in playback page. On the top you have play, pause, and stop. At the second half you have speech rate slider on your left and toggle button to change voice on your right.");
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 5),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.help,
+                              size: 30,
+                            ),
+                            Text(
+                              "Help",
+                              style: TextStyle(
+                                  fontSize: 30, color: Colors.grey[600]),
+                            )
+                          ],
+                        ),
+                      ),
+                    )),
+              ],
+            ),
           )),
     );
   }
@@ -249,7 +316,7 @@ class _SpeechPageState extends State<SpeechPage> {
   void getSpeech(scannedText) async {
     await ftts.stop();
 //your custom configuration
-    await ftts.setLanguage("en-US");
+    //await ftts.setLanguage("en-US");
     await ftts.setSpeechRate(0.5); //speed of speech
     await ftts.setVolume(1.0); //volume of speech
     await ftts.setPitch(1.0); //pitch of sound
@@ -289,7 +356,7 @@ class _SpeechPageState extends State<SpeechPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SliderWidget('rate', minRate, maxRate),
-                SliderWidget('pitch', minPitch, maxPitch),
+                Button('Voice', set_voice),
               ]),
         ));
   }

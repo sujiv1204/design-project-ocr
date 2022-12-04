@@ -45,6 +45,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  bool ismale = true;
   bool _busy = false;
   FlutterTts ftts = FlutterTts();
   bool textScanning = false;
@@ -176,11 +177,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8.0)),
                               ),
-                              onPressed: () async {
+                              onPressed: () {
                                 Vibration("Medium");
-
+                                print('in repeat');
+                                print(scannedText);
                                 Navigator.pushNamed(context, '/speech',
-                                    arguments: {"text": scannedText});
+                                    arguments: {
+                                      "text": scannedText,
+                                      "ismale": ismale
+                                    });
                               },
                               child: Container(
                                 margin: const EdgeInsets.symmetric(
@@ -231,7 +236,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       ),
                       onPressed: () {
                         Vibration("Medium");
-                        getSpeech("You are in the Home Page");
+                        getSpeech("You are in the Home Page. On the top is the camera button. At the bottom half there are two options of gallery on your left and repeat on the right to re read the image. ");
                       },
                       child: Container(
                         margin: const EdgeInsets.symmetric(
@@ -360,11 +365,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     textScanning = false;
     // getSpeech(scannedText);
     if (scannedText == "") {
+      scannedText = "No text found. Please take picture again";
       getSpeech("No text found. Please take picture again");
     } else {
       getSpeech("Text Found. Moving to next screen");
       if (!mounted) return;
-      Navigator.pushNamed(context, '/speech', arguments: {"text": scannedText});
+      Navigator.pushNamed(context, '/speech',
+          arguments: {"text": scannedText, "ismale": ismale});
     }
 
     setState(() {});
@@ -373,7 +380,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void getSpeech(scannedText) async {
     await ftts.stop();
 //your custom configuration
-    await ftts.setLanguage("en-US");
+    //await ftts.setLanguage("en-US");
     await ftts.setSpeechRate(0.5); //speed of speech
     await ftts.setVolume(1.0); //volume of speech
     await ftts.setPitch(1); //pitc of sound
@@ -417,15 +424,46 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    print('2');
     _busy = true;
 
-    loadModel().then((val) {
+    init_vibrate();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    print('1');
+    // put your logic from initState here
+
+    await loadModel().then((val) {
       setState(() {
         _busy = false;
         scannedText = "Tflite module loded";
         print("loded");
       });
     });
-    init_vibrate();
+
+    final args = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    print('args $args');
+    setState(() {
+      if (args.isEmpty) {
+        ismale = true;
+        scannedText = "Welcome to our application Eye to the Blind";
+        print('Inside if block');
+        print(scannedText);
+      } else {
+        ismale = args['ismale'];
+        scannedText = args['scannedText'];
+        print('Inside else block');
+        print(scannedText);
+      }
+    });
+
+    // setState(() {});
+    // if (args['ismale'] == Null)
+    //   ismale = true;
+    // else
   }
 }
