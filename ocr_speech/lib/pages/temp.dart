@@ -323,17 +323,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       // _localPath = _imagePath;
       // print(_imagePath);
     });
-    final pickedimage = XFile(_imagePath!);
-    predictImage(pickedimage);
+    // final pickedimage = _localFile;
+    // predictImage(pickedimage);
   }
 
   void getImage(ImageSource source) async {
     try {
       final pickedImage = await ImagePicker().pickImage(source: source);
-      // final edgeDetectedFile =
-      //     await EdgeDetection.detectEdge(pickedImage!.path);
-      // final edgeDetectedFile = await EdgeDetector.detectEdge(
-      //   imageFile: _imageFile, method: EdgeDetectorMethod.Canny);
+      final edgeDetectedFile =
+          await EdgeDetection.detectEdge(pickedImage!.path);
       // final filePath = pickedImage?.path;
       // EdgeDetectionResult result = await EdgeDetector().detectEdges(filePath);
       // print(result);
