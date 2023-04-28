@@ -47,6 +47,9 @@ dependencies:
   permission_handler: ^10.0.0
   path_provider: ^2.0.11
   path: ^1.8.2
+  ffi: ^1.1.2
+  tflite_flutter: ^0.9.1
+  image: ^3.0.2
   # simple_edge_detection: 
   #   path: ./flutter-simple-edge-detection/
   # edge_detector:
@@ -80,6 +83,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/tflite/model.tflite
+    - assets/tflite/student.tflite
     - assets/tflite/labels.txt
     - assets/rectangle6.svg
 

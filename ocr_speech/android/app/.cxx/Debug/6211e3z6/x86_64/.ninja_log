@@ -1,0 +1,9 @@
+# ninja log v5
+1	3154	703700611	CMakeFiles/OpenCV_ffi.dir/C_/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp.o	948e3bd6600d60cb
+3158	3473	703700612	C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/build/app/intermediates/cxx/Debug/6211e3z6/obj/x86_64/libOpenCV_ffi.so	78cb290788cf97cb
+9	2917	703788621	CMakeFiles/OpenCV_ffi.dir/C_/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp.o	948e3bd6600d60cb
+2918	3702	703788621	C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/build/app/intermediates/cxx/Debug/6211e3z6/obj/x86_64/libOpenCV_ffi.so	78cb290788cf97cb
+6	3298	703788746	CMakeFiles/OpenCV_ffi.dir/C_/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp.o	948e3bd6600d60cb
+3298	3612	703788746	C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/build/app/intermediates/cxx/Debug/6211e3z6/obj/x86_64/libOpenCV_ffi.so	78cb290788cf97cb
+6	2792	703789071	CMakeFiles/OpenCV_ffi.dir/C_/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp.o	948e3bd6600d60cb
+2792	3063	703789071	C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/build/app/intermediates/cxx/Debug/6211e3z6/obj/x86_64/libOpenCV_ffi.so	78cb290788cf97cb

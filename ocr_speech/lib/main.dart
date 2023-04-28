@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 // import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
@@ -18,6 +16,13 @@ import 'package:edge_detection/edge_detection.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import 'dart:ffi';
+import 'package:ffi/ffi.dart';
+import 'dart:io';
+import 'pages/test.dart';
+import 'package:image/image.dart' as img;
+
 
 void main() {
   runApp(const MyApp());
@@ -63,6 +68,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   bool _canVibrate = true;
   String? _imagePath;
 
+  final dylib = Platform.isAndroid
+      ? DynamicLibrary.open("libOpenCV_ffi.so")
+      : DynamicLibrary.process();
+
+  final ImagePicker _picker = ImagePicker();
+
   @override
   Widget build(BuildContext context) {
     responsive = Responsive(context);
@@ -103,11 +114,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0)),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             Vibration("Medium");
-
+                            //intital function
                             // getImage(ImageSource.camera);
-                            getImage2();
+                            //edge detection pacakge
+                            // getImage2();
+                            //testing opencv
+                            getImage3();
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
@@ -283,6 +297,23 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   //   return XFile(path!);
   // }
 
+//testing opencv
+  Future<void> getImage3() async {
+    Image ?img;
+    final imageFile = await _picker.pickImage(source: ImageSource.gallery);
+    final imagepth = imageFile?.path.toNativeUtf8() ?? "none".toNativeUtf8();
+    final crop = dylib.lookupFunction<Void Function(Pointer<Utf8>),
+        void Function(Pointer<Utf8>)>('cropImage');
+    crop(imagepth);
+    setState(() {
+      img = Image.file(File(imagepth.toDartString()));
+    });
+    Navigator.push(
+        this.context,
+        MaterialPageRoute(
+            builder: (context) => TakePictureScreen(image: img)));
+  }
+//edge detection pacakage
   Future<void> getImage2() async {
     bool isCameraGranted = await Permission.camera.request().isGranted;
     if (!isCameraGranted) {
@@ -326,7 +357,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     final pickedimage = XFile(_imagePath!);
     predictImage(pickedimage);
   }
-
+//intital function
   void getImage(ImageSource source) async {
     try {
       final pickedImage = await ImagePicker().pickImage(source: source);
@@ -337,6 +368,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       // final filePath = pickedImage?.path;
       // EdgeDetectionResult result = await EdgeDetector().detectEdges(filePath);
       // print(result);
+
+      
       if (pickedImage != null) {
         textScanning = true;
         imageFile = pickedImage;
@@ -356,7 +389,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     Tflite.close();
     try {
       String res = await Tflite.loadModel(
-            model: "assets/tflite/model.tflite",
+            model: "assets/tflite/student.tflite",
             labels: "assets/tflite/labels.txt",
           ) ??
           '';
@@ -384,7 +417,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         asynch: true // defaults to true
         );
     _recognitions = recognitions ?? [];
-    // print(_recognitions);
+    print(_recognitions);
     if (_recognitions[0]['label'].toString() == "BLUR") {
       // _selected0 = "BLUR";
       val0 = '${(_recognitions[0]["confidence"] * 100)}';
