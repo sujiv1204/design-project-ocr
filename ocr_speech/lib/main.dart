@@ -99,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           onPressed: () {
                             Vibration("Medium");
 
-                            getImage(ImageSource.camera);
+                            getImage(ImageSource.gallery, "document");
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
@@ -140,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                               ),
                               onPressed: () {
                                 Vibration("Medium");
-                                getImage(ImageSource.gallery);
+                                getImage(ImageSource.gallery, "currency");
                               },
                               child: Container(
                                 margin: const EdgeInsets.symmetric(
@@ -153,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                       size: 40,
                                     ),
                                     Text(
-                                      "Gallery",
+                                      "Currency",
                                       style: TextStyle(
                                           fontSize: 20,
                                           color: Colors.grey[600]),
@@ -236,7 +236,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       ),
                       onPressed: () {
                         Vibration("Medium");
-                        getSpeech("You are in the Home Page. On the top is the camera button. At the bottom half there are two options of gallery on your left and repeat on the right to re read the image. ");
+                        getSpeech(
+                            "You are in the Home Page. On the top is the camera button. At the bottom half there are two options of gallery on your left and repeat on the right to re read the image. ");
                       },
                       child: Container(
                         margin: const EdgeInsets.symmetric(
@@ -263,7 +264,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     );
   }
 
-  void getImage(ImageSource source) async {
+  void getImage(ImageSource source, String type) async {
     try {
       final pickedImage = await ImagePicker().pickImage(source: source);
       // final filePath = pickedImage?.path;
@@ -273,7 +274,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         textScanning = true;
         imageFile = pickedImage;
         setState(() {});
-        predictImage(pickedImage);
+        predictImage(pickedImage, type);
         // getRecognisedText(pickedImage);
       }
     } catch (e) {
@@ -284,21 +285,34 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     }
   }
 
-  loadModel() async {
+  loadModel(int model) async {
     Tflite.close();
     try {
+      String? modelToLoad;
+      String? labelToLoad;
+      if (model == 1) {
+        modelToLoad = "model";
+        labelToLoad = "labels";
+      } else if (model == 2) {
+        modelToLoad = "student";
+        labelToLoad = "labels1";
+      } else if (model == 3) {
+        modelToLoad = "model_unquant";
+        labelToLoad = "labels2";
+      }
       String res = await Tflite.loadModel(
-            model: "assets/tflite/model.tflite",
-            labels: "assets/tflite/labels.txt",
+            model: "assets/tflite/$modelToLoad.tflite",
+            labels: "assets/tflite/$labelToLoad.txt",
           ) ??
           '';
+      setState(() {});
     } on PlatformException {
       print("Failed to load the model");
     }
   }
 
-  void predictImage(XFile image) async {
-    await classify(image);
+  void predictImage(XFile image, String type) async {
+    await classify(image, type);
     // setState(() {});
   }
 
@@ -306,7 +320,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   String val0 = "";
   String val1 = "";
 
-  classify(XFile image) async {
+  classify(XFile image, String type) async {
+    loadModel(1);
     var recognitions = await Tflite.runModelOnImage(
         path: image.path, // required
         imageMean: 0.0, // defaults to 117.0
@@ -340,13 +355,64 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     print('The values2 are: ${[v1, v2]}');
     if (v2 > 60) {
       print("sharp");
-      getRecognisedText(image);
+      if (type == "document") {
+        documentProcessing(image);
+      } else if (type == "currency") {
+        currencyProcessing(image);
+      }
     } else {
       print("blur");
       scannedText = "Please take picture again";
       getSpeech(scannedText);
       textScanning = false;
     }
+    setState(() {});
+  }
+
+  double? ocrRes;
+  documentProcessing(XFile image) async {
+    loadModel(2);
+    var recognitions = await Tflite.runModelOnImage(
+        path: image.path, // required
+        imageMean: 0.0, // defaults to 117.0
+        imageStd: 255.0, // defaults to 1.0
+        numResults: 2, // defaults to 5
+        threshold: 0.2, // defaults to 0.1
+        asynch: true // defaults to true
+        );
+    _recognitions = recognitions ?? [];
+    ocrRes = _recognitions[0]["confidence"] * 100;
+    print(ocrRes);
+    if (ocrRes! > 60) {
+      getRecognisedText(image);
+    } else {
+      scannedText = "Please take picture again";
+      getSpeech(scannedText);
+      textScanning = false;
+    }
+    setState(() {});
+  }
+
+  String currency = "";
+  currencyProcessing(XFile image) async {
+    loadModel(3);
+    var recognitions = await Tflite.runModelOnImage(
+        path: image.path, // required
+        imageMean: 0.0, // defaults to 117.0
+        imageStd: 255.0, // defaults to 1.0
+        numResults: 2, // defaults to 5
+        threshold: 0.2, // defaults to 0.1
+        asynch: true // defaults to true
+        );
+    _recognitions = recognitions ?? [];
+    print(_recognitions);
+    final maxLabel = _recognitions
+        .reduce((a, b) => a["confidence"] > b["confidence"] ? a : b)["label"];
+    print(maxLabel);
+    currency = maxLabel.toString();
+    scannedText = currency;
+    getSpeech(scannedText);
+    textScanning = false;
     setState(() {});
   }
 
@@ -435,12 +501,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     super.didChangeDependencies();
     print('1');
     // put your logic from initState here
-
-    await loadModel().then((val) {
+    await loadModel(1).then((val) {
       setState(() {
         _busy = false;
-        scannedText = "Tflite module loded";
-        print("loded");
+        scannedText = "Tflite module loaded";
+        print("loaded");
       });
     });
 

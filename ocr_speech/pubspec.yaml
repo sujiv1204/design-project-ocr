@@ -76,7 +76,11 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/tflite/model.tflite
+    - assets/tflite/student.tflite
+    - assets/tflite/model_unquant.tflite
     - assets/tflite/labels.txt
+    - assets/tflite/labels1.txt
+    - assets/tflite/labels2.txt
     - assets/rectangle6.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
