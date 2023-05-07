@@ -99,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           onPressed: () {
                             Vibration("Medium");
 
-                            getImage(ImageSource.gallery, "document");
+                            getImage(ImageSource.camera, "document");
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
@@ -140,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                               ),
                               onPressed: () {
                                 Vibration("Medium");
-                                getImage(ImageSource.gallery, "currency");
+                                getImage(ImageSource.camera, "currency");
                               },
                               child: Container(
                                 margin: const EdgeInsets.symmetric(
