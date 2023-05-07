@@ -1,0 +1,453 @@
+ninja: Entering directory `C:\Users\sujiv\Documents\design-project-ocr\ocr_speech\android\app\.cxx\Debug\6211e3z6\arm64-v8a'
+[1/2] Building CXX object CMakeFiles/OpenCV_ffi.dir/C_/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp.o
+FAILED: CMakeFiles/OpenCV_ffi.dir/C_/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp.o 
+C:\Users\sujiv\AppData\Local\Android\Sdk\ndk\21.1.6352462\toolchains\llvm\prebuilt\windows-x86_64\bin\clang++.exe --target=aarch64-none-linux-android21 --gcc-toolchain=C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DOpenCV_ffi_EXPORTS -I../../../../../include -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -frtti -fexceptions -std=c++17 -O0 -fno-limit-debug-info  -fPIC -MD -MT CMakeFiles/OpenCV_ffi.dir/C_/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp.o -MF CMakeFiles\OpenCV_ffi.dir\C_\Users\sujiv\Documents\design-project-ocr\ocr_speech\lib\opencv-cpp\main.cpp.o.d -o CMakeFiles/OpenCV_ffi.dir/C_/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp.o -c C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp
+In file included from C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp:9:
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:27:39: error: use of undeclared identifier 'maxArea'; did you mean 'max_area'?
+        Ptr<MSER> mser = MSER::create(maxArea = max_area);
+                                      ^~~~~~~
+                                      max_area
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:25:46: note: 'max_area' declared here
+    vector<Rect> find_characters(Mat im, int max_area)
+                                             ^
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:31:45: error: too few arguments to function call, expected 3, have 2
+        mser->detectRegions(gray, characters);
+        ~~~~~~~~~~~~~~~~~~~                 ^
+../../../../../include\opencv2/features2d.hpp:497:13: note: 'detectRegions' declared here
+    CV_WRAP virtual void detectRegions( InputArray image,
+            ^
+In file included from C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp:9:
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:142:29: error: no viable overloaded operator[] for type 'map<int, vector<int> >'
+            if (intersection["coords"][0] == coords.x && intersection["coords"][1] == coords.y)
+                ~~~~~~~~~~~~^~~~~~~~~
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\map:1129:18: note: candidate function not viable: no known conversion from 'const char [7]' to 'const std::__ndk1::map<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> >, std::__ndk1::less<int>, std::__ndk1::allocator<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > > >::key_type' (aka 'const int') for 1st argument
+    mapped_type& operator[](const key_type& __k);
+                 ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\map:1131:18: note: candidate function not viable: no known conversion from 'const char [7]' to 'std::__ndk1::map<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> >, std::__ndk1::less<int>, std::__ndk1::allocator<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > > >::key_type' (aka 'int') for 1st argument
+    mapped_type& operator[](key_type&& __k);
+                 ^
+In file included from C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp:9:
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:142:70: error: no viable overloaded operator[] for type 'map<int, vector<int> >'
+            if (intersection["coords"][0] == coords.x && intersection["coords"][1] == coords.y)
+                                                         ~~~~~~~~~~~~^~~~~~~~~
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\map:1129:18: note: candidate function not viable: no known conversion from 'const char [7]' to 'const std::__ndk1::map<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> >, std::__ndk1::less<int>, std::__ndk1::allocator<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > > >::key_type' (aka 'const int') for 1st argument
+    mapped_type& operator[](const key_type& __k);
+                 ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\map:1131:18: note: candidate function not viable: no known conversion from 'const char [7]' to 'std::__ndk1::map<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> >, std::__ndk1::less<int>, std::__ndk1::allocator<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > > >::key_type' (aka 'int') for 1st argument
+    mapped_type& operator[](key_type&& __k);
+                 ^
+In file included from C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp:9:
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:174:48: error: type 'float' cannot be narrowed to 'int' in initializer list [-Wc++11-narrowing]
+                    intersection[vertex_id] = {line1[0], line1[1], line2[0], line2[1]};
+                                               ^~~~~~~~
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:174:48: note: insert an explicit cast to silence this issue
+                    intersection[vertex_id] = {line1[0], line1[1], line2[0], line2[1]};
+                                               ^~~~~~~~
+                                               static_cast<int>( )
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:174:58: error: type 'float' cannot be narrowed to 'int' in initializer list [-Wc++11-narrowing]
+                    intersection[vertex_id] = {line1[0], line1[1], line2[0], line2[1]};
+                                                         ^~~~~~~~
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:174:58: note: insert an explicit cast to silence this issue
+                    intersection[vertex_id] = {line1[0], line1[1], line2[0], line2[1]};
+                                                         ^~~~~~~~
+                                                         static_cast<int>( )
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:174:68: error: type 'float' cannot be narrowed to 'int' in initializer list [-Wc++11-narrowing]
+                    intersection[vertex_id] = {line1[0], line1[1], line2[0], line2[1]};
+                                                                   ^~~~~~~~
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:174:68: note: insert an explicit cast to silence this issue
+                    intersection[vertex_id] = {line1[0], line1[1], line2[0], line2[1]};
+                                                                   ^~~~~~~~
+                                                                   static_cast<int>( )
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:174:78: error: type 'float' cannot be narrowed to 'int' in initializer list [-Wc++11-narrowing]
+                    intersection[vertex_id] = {line1[0], line1[1], line2[0], line2[1]};
+                                                                             ^~~~~~~~
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:174:78: note: insert an explicit cast to silence this issue
+                    intersection[vertex_id] = {line1[0], line1[1], line2[0], line2[1]};
+                                                                             ^~~~~~~~
+                                                                             static_cast<int>( )
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:175:33: error: no viable overloaded operator[] for type 'map<int, vector<int> >'
+                    intersection["coords"] = {coords.x, coords.y};
+                    ~~~~~~~~~~~~^~~~~~~~~
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\map:1129:18: note: candidate function not viable: no known conversion from 'const char [7]' to 'const std::__ndk1::map<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> >, std::__ndk1::less<int>, std::__ndk1::allocator<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > > >::key_type' (aka 'const int') for 1st argument
+    mapped_type& operator[](const key_type& __k);
+                 ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\map:1131:18: note: candidate function not viable: no known conversion from 'const char [7]' to 'std::__ndk1::map<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> >, std::__ndk1::less<int>, std::__ndk1::allocator<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > > >::key_type' (aka 'int') for 1st argument
+    mapped_type& operator[](key_type&& __k);
+                 ^
+In file included from C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp:9:
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:188:33: error: no matching function for call to 'set_intersection'
+        set<int> common_lines = set_intersection(s1, s2);
+                                ^~~~~~~~~~~~~~~~
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\algorithm:5424:1: note: candidate function template not viable: requires 6 arguments, but 2 were provided
+set_intersection(_InputIterator1 __first1, _InputIterator1 __last1,
+^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\algorithm:5434:1: note: candidate function template not viable: requires 5 arguments, but 2 were provided
+set_intersection(_InputIterator1 __first1, _InputIterator1 __last1,
+^
+In file included from C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp:9:
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:200:29: error: no viable overloaded operator[] for type 'map<int, vector<int> >'
+                    graph[i1["id"]].push_back(i2["id"]);
+                          ~~^~~~~
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\map:1129:18: note: candidate function not viable: no known conversion from 'const char [3]' to 'const std::__ndk1::map<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> >, std::__ndk1::less<int>, std::__ndk1::allocator<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > > >::key_type' (aka 'const int') for 1st argument
+    mapped_type& operator[](const key_type& __k);
+                 ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\map:1131:18: note: candidate function not viable: no known conversion from 'const char [3]' to 'std::__ndk1::map<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> >, std::__ndk1::less<int>, std::__ndk1::allocator<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > > >::key_type' (aka 'int') for 1st argument
+    mapped_type& operator[](key_type&& __k);
+                 ^
+In file included from C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp:9:
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:200:49: error: no viable overloaded operator[] for type 'map<int, vector<int> >'
+                    graph[i1["id"]].push_back(i2["id"]);
+                                              ~~^~~~~
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\map:1129:18: note: candidate function not viable: no known conversion from 'const char [3]' to 'const std::__ndk1::map<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> >, std::__ndk1::less<int>, std::__ndk1::allocator<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > > >::key_type' (aka 'const int') for 1st argument
+    mapped_type& operator[](const key_type& __k);
+                 ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\map:1131:18: note: candidate function not viable: no known conversion from 'const char [3]' to 'std::__ndk1::map<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> >, std::__ndk1::less<int>, std::__ndk1::allocator<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > > >::key_type' (aka 'int') for 1st argument
+    mapped_type& operator[](key_type&& __k);
+                 ^
+In file included from C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp:9:
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:241:51: error: no viable overloaded operator[] for type 'std::__ndk1::__vector_base<std::__ndk1::map<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> >, std::__ndk1::less<int>, std::__ndk1::allocator<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > > >, std::__ndk1::allocator<std::__ndk1::map<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> >, std::__ndk1::less<int>, std::__ndk1::allocator<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > > > > >::value_type' (aka 'std::__ndk1::map<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> >, std::__ndk1::less<int>, std::__ndk1::allocator<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > > >')
+                rect.push_back(intersections[node]["coords"]);
+                               ~~~~~~~~~~~~~~~~~~~^~~~~~~~~
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\map:1129:18: note: candidate function not viable: no known conversion from 'const char [7]' to 'const std::__ndk1::map<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> >, std::__ndk1::less<int>, std::__ndk1::allocator<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > > >::key_type' (aka 'const int') for 1st argument
+    mapped_type& operator[](const key_type& __k);
+                 ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\map:1131:18: note: candidate function not viable: no known conversion from 'const char [7]' to 'std::__ndk1::map<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> >, std::__ndk1::less<int>, std::__ndk1::allocator<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > > >::key_type' (aka 'int') for 1st argument
+    mapped_type& operator[](key_type&& __k);
+                 ^
+In file included from C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp:9:
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:243:20: error: no matching member function for call to 'push_back'
+            result.push_back(rect);
+            ~~~~~~~^~~~~~~~~
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\vector:711:36: note: candidate function not viable: no known conversion from 'vector<cv::Point>' (aka 'vector<Point_<int> >') to 'const std::__ndk1::__vector_base<cv::Point_<int>, std::__ndk1::allocator<cv::Point_<int> > >::value_type' (aka 'const cv::Point_<int>') for 1st argument
+    _LIBCPP_INLINE_VISIBILITY void push_back(const_reference __x);
+                                   ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\vector:714:36: note: candidate function not viable: no known conversion from 'vector<cv::Point>' (aka 'vector<Point_<int> >') to 'std::__ndk1::vector<cv::Point_<int>, std::__ndk1::allocator<cv::Point_<int> > >::value_type' (aka 'cv::Point_<int>') for 1st argument
+    _LIBCPP_INLINE_VISIBILITY void push_back(value_type&& __x);
+                                   ^
+In file included from C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp:9:
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:254:16: error: no viable conversion from returned value of type 'vector<cv::Point>' to function return type 'vector<vector<cv::Point>>'
+        return cycles2coords(loops, intersections);
+               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\vector:557:5: note: candidate constructor not viable: no known conversion from 'vector<cv::Point>' (aka 'vector<Point_<int> >') to 'const std::__ndk1::vector<std::__ndk1::vector<cv::Point_<int>, std::__ndk1::allocator<cv::Point_<int> > >, std::__ndk1::allocator<std::__ndk1::vector<cv::Point_<int>, std::__ndk1::allocator<cv::Point_<int> > > > > &' for 1st argument
+    vector(const vector& __x);
+    ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\vector:564:5: note: candidate constructor not viable: no known conversion from 'vector<cv::Point>' (aka 'vector<Point_<int> >') to 'initializer_list<std::__ndk1::vector<std::__ndk1::vector<cv::Point_<int>, std::__ndk1::allocator<cv::Point_<int> > >, std::__ndk1::allocator<std::__ndk1::vector<cv::Point_<int>, std::__ndk1::allocator<cv::Point_<int> > > > >::value_type>' (aka 'initializer_list<std::__ndk1::vector<cv::Point_<int>, std::__ndk1::allocator<cv::Point_<int> > > >') for 1st argument
+    vector(initializer_list<value_type> __il);
+    ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\vector:570:5: note: candidate constructor not viable: no known conversion from 'vector<cv::Point>' (aka 'vector<Point_<int> >') to 'std::__ndk1::vector<std::__ndk1::vector<cv::Point_<int>, std::__ndk1::allocator<cv::Point_<int> > >, std::__ndk1::allocator<std::__ndk1::vector<cv::Point_<int>, std::__ndk1::allocator<cv::Point_<int> > > > > &&' for 1st argument
+    vector(vector&& __x)
+    ^
+In file included from C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp:9:
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:271:57: error: invalid operands to binary expression ('cv::Point_<int>' and 'int')
+                                 { return a.x < b.x; }) -
+                                 ~~~~~~~~~~~~~~~~~~~~~~ ^
+../../../../../include\opencv2/core/types.hpp:2142:7: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::Range' for 1st argument
+Range operator - (const Range& r1, int delta)
+      ^
+../../../../../include\opencv2/core/mat.inl.hpp:2453:18: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::MatConstIterator' for 1st argument
+MatConstIterator operator - (const MatConstIterator& a, ptrdiff_t ofs)
+                 ^
+../../../../../include\opencv2/core/mat.hpp:3611:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::Mat' for 1st argument
+CV_EXPORTS MatExpr operator - (const Mat& a, const Scalar& s);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3615:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::MatExpr' for 1st argument
+CV_EXPORTS MatExpr operator - (const MatExpr& e, const Scalar& s);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3610:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::Mat' for 1st argument
+CV_EXPORTS MatExpr operator - (const Mat& a, const Mat& b);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3612:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::Scalar' (aka 'const Scalar_<double>') for 1st argument
+CV_EXPORTS MatExpr operator - (const Scalar& s, const Mat& a);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3613:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::MatExpr' for 1st argument
+CV_EXPORTS MatExpr operator - (const MatExpr& e, const Mat& m);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3614:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::Mat' for 1st argument
+CV_EXPORTS MatExpr operator - (const Mat& m, const MatExpr& e);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3616:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::Scalar' (aka 'const Scalar_<double>') for 1st argument
+CV_EXPORTS MatExpr operator - (const Scalar& s, const MatExpr& e);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3617:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::MatExpr' for 1st argument
+CV_EXPORTS MatExpr operator - (const MatExpr& e1, const MatExpr& e2);
+                   ^
+../../../../../include\opencv2/core/mat.inl.hpp:2428:11: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::MatConstIterator' for 1st argument
+ptrdiff_t operator - (const MatConstIterator& b, const MatConstIterator& a)
+          ^
+../../../../../include\opencv2/core/persistence.hpp:1335:11: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::FileNodeIterator' for 1st argument
+ptrdiff_t operator - (const FileNodeIterator& it1, const FileNodeIterator& it2)
+          ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\iterator:788:1: note: candidate template ignored: could not match 'reverse_iterator' against 'Point_'
+operator-(const reverse_iterator<_Iter1>& __x, const reverse_iterator<_Iter2>& __y)
+^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\iterator:1224:1: note: candidate template ignored: could not match 'move_iterator' against 'Point_'
+operator-(const move_iterator<_Iter1>& __x, const move_iterator<_Iter2>& __y)
+^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\iterator:1632:1: note: candidate template ignored: could not match '__wrap_iter' against 'Point_'
+operator-(const __wrap_iter<_Iter1>& __x, const __wrap_iter<_Iter2>& __y) _NOEXCEPT
+^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\string:558:11: note: candidate template ignored: could not match 'fpos' against 'Point_'
+streamoff operator-(const fpos<_StateT>& __x, const fpos<_StateT>& __y)
+          ^
+../../../../../include\opencv2/core/matx.hpp:1216:17: note: candidate template ignored: could not match 'Matx' against 'Point_'
+Matx<_Tp, m, n> operator - (const Matx<_Tp, m, n>& a, const Matx<_Tp, m, n>& b)
+                ^
+../../../../../include\opencv2/core/matx.hpp:1372:14: note: candidate template ignored: could not match 'Vec' against 'Point_'
+Vec<_Tp, cn> operator - (const Vec<_Tp, cn>& a, const Vec<_Tp, cn>& b)
+             ^
+../../../../../include\opencv2/core/types.hpp:1038:14: note: candidate template ignored: could not match 'Complex' against 'Point_'
+Complex<_Tp> operator - (const Complex<_Tp>& a, const Complex<_Tp>& b)
+             ^
+../../../../../include\opencv2/core/types.hpp:1081:14: note: candidate template ignored: could not match 'Complex' against 'Point_'
+Complex<_Tp> operator - (const Complex<_Tp>& a, _Tp b)
+             ^
+../../../../../include\opencv2/core/types.hpp:1091:14: note: candidate template ignored: could not match 'Complex<type-parameter-0-0>' against 'int'
+Complex<_Tp> operator - (_Tp b, const Complex<_Tp>& a)
+             ^
+../../../../../include\opencv2/core/types.hpp:1323:13: note: candidate template ignored: could not match 'Point_<type-parameter-0-0>' against 'int'
+Point_<_Tp> operator - (const Point_<_Tp>& a, const Point_<_Tp>& b)
+            ^
+../../../../../include\opencv2/core/types.hpp:1592:14: note: candidate template ignored: could not match 'Point3_' against 'Point_'
+Point3_<_Tp> operator - (const Point3_<_Tp>& a, const Point3_<_Tp>& b)
+             ^
+../../../../../include\opencv2/core/types.hpp:1799:12: note: candidate template ignored: could not match 'Size_' against 'Point_'
+Size_<_Tp> operator - (const Size_<_Tp>& a, const Size_<_Tp>& b)
+           ^
+../../../../../include\opencv2/core/types.hpp:2002:12: note: candidate template ignored: could not match 'Rect_' against 'Point_'
+Rect_<_Tp> operator - (const Rect_<_Tp>& a, const Point_<_Tp>& b)
+           ^
+../../../../../include\opencv2/core/types.hpp:2014:12: note: candidate template ignored: could not match 'Rect_' against 'Point_'
+Rect_<_Tp> operator - (const Rect_<_Tp>& a, const Size_<_Tp>& b)
+           ^
+../../../../../include\opencv2/core/types.hpp:2309:14: note: candidate template ignored: could not match 'Scalar_' against 'Point_'
+Scalar_<_Tp> operator - (const Scalar_<_Tp>& a, const Scalar_<_Tp>& b)
+             ^
+../../../../../include\opencv2/core/mat.hpp:3619:9: note: candidate template ignored: could not match 'Matx<type-parameter-0-0, m, n>' against 'int'
+MatExpr operator - (const Mat& a, const Matx<_Tp, m, n>& b) { return a - Mat(b); }
+        ^
+../../../../../include\opencv2/core/mat.hpp:3621:9: note: candidate template ignored: could not match 'Matx' against 'Point_'
+MatExpr operator - (const Matx<_Tp, m, n>& a, const Mat& b) { return Mat(a) - b; }
+        ^
+../../../../../include\opencv2/core/mat.inl.hpp:2601:24: note: candidate template ignored: could not match 'MatConstIterator_' against 'Point_'
+MatConstIterator_<_Tp> operator - (const MatConstIterator_<_Tp>& a, ptrdiff_t ofs)
+                       ^
+../../../../../include\opencv2/core/mat.inl.hpp:2738:19: note: candidate template ignored: could not match 'MatIterator_' against 'Point_'
+MatIterator_<_Tp> operator - (const MatIterator_<_Tp>& a, ptrdiff_t ofs)
+                  ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\complex:561:1: note: candidate template ignored: could not match 'complex' against 'Point_'
+operator-(const complex<_Tp>& __x, const complex<_Tp>& __y)
+^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\complex:571:1: note: candidate template ignored: could not match 'complex' against 'Point_'
+operator-(const complex<_Tp>& __x, const _Tp& __y)
+^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\complex:581:1: note: candidate template ignored: could not match 'complex<type-parameter-0-0>' against 'int'
+operator-(const _Tp& __x, const complex<_Tp>& __y)
+^
+../../../../../include\opencv2/core/core_c.h:3098:41: note: candidate template ignored: could not match 'SeqIterator' against 'Point_'
+template<typename _Tp> inline ptrdiff_t operator - (const SeqIterator<_Tp>& a,
+                                        ^
+../../../../../include\opencv2/core/matx.hpp:1310:17: note: candidate function template not viable: requires single argument 'a', but 2 arguments were provided
+Matx<_Tp, m, n> operator - (const Matx<_Tp, m, n>& a)
+                ^
+../../../../../include\opencv2/core/matx.hpp:1483:14: note: candidate function template not viable: requires single argument 'a', but 2 arguments were provided
+Vec<_Tp, cn> operator - (const Vec<_Tp, cn>& a)
+             ^
+../../../../../include\opencv2/core/types.hpp:1051:14: note: candidate function template not viable: requires single argument 'a', but 2 arguments were provided
+Complex<_Tp> operator - (const Complex<_Tp>& a)
+             ^
+../../../../../include\opencv2/core/types.hpp:1329:13: note: candidate function template not viable: requires single argument 'a', but 2 arguments were provided
+Point_<_Tp> operator - (const Point_<_Tp>& a)
+            ^
+../../../../../include\opencv2/core/types.hpp:1598:14: note: candidate function template not viable: requires single argument 'a', but 2 arguments were provided
+Point3_<_Tp> operator - (const Point3_<_Tp>& a)
+             ^
+../../../../../include\opencv2/core/types.hpp:2333:14: note: candidate function template not viable: requires single argument 'a', but 2 arguments were provided
+Scalar_<_Tp> operator - (const Scalar_<_Tp>& a)
+             ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\complex:740:1: note: candidate function template not viable: requires single argument '__x', but 2 arguments were provided
+operator-(const complex<_Tp>& __x)
+^
+../../../../../include\opencv2/core/mat.hpp:3623:20: note: candidate function not viable: requires single argument 'm', but 2 arguments were provided
+CV_EXPORTS MatExpr operator - (const Mat& m);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3624:20: note: candidate function not viable: requires single argument 'e', but 2 arguments were provided
+CV_EXPORTS MatExpr operator - (const MatExpr& e);
+                   ^
+In file included from C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp:9:
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:274:58: error: invalid operands to binary expression ('cv::Point_<int>' and 'int')
+                                  { return a.y < b.y; }) -
+                                  ~~~~~~~~~~~~~~~~~~~~~~ ^
+../../../../../include\opencv2/core/types.hpp:2142:7: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::Range' for 1st argument
+Range operator - (const Range& r1, int delta)
+      ^
+../../../../../include\opencv2/core/mat.inl.hpp:2453:18: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::MatConstIterator' for 1st argument
+MatConstIterator operator - (const MatConstIterator& a, ptrdiff_t ofs)
+                 ^
+../../../../../include\opencv2/core/mat.hpp:3611:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::Mat' for 1st argument
+CV_EXPORTS MatExpr operator - (const Mat& a, const Scalar& s);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3615:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::MatExpr' for 1st argument
+CV_EXPORTS MatExpr operator - (const MatExpr& e, const Scalar& s);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3610:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::Mat' for 1st argument
+CV_EXPORTS MatExpr operator - (const Mat& a, const Mat& b);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3612:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::Scalar' (aka 'const Scalar_<double>') for 1st argument
+CV_EXPORTS MatExpr operator - (const Scalar& s, const Mat& a);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3613:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::MatExpr' for 1st argument
+CV_EXPORTS MatExpr operator - (const MatExpr& e, const Mat& m);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3614:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::Mat' for 1st argument
+CV_EXPORTS MatExpr operator - (const Mat& m, const MatExpr& e);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3616:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::Scalar' (aka 'const Scalar_<double>') for 1st argument
+CV_EXPORTS MatExpr operator - (const Scalar& s, const MatExpr& e);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3617:20: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::MatExpr' for 1st argument
+CV_EXPORTS MatExpr operator - (const MatExpr& e1, const MatExpr& e2);
+                   ^
+../../../../../include\opencv2/core/mat.inl.hpp:2428:11: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::MatConstIterator' for 1st argument
+ptrdiff_t operator - (const MatConstIterator& b, const MatConstIterator& a)
+          ^
+../../../../../include\opencv2/core/persistence.hpp:1335:11: note: candidate function not viable: no known conversion from 'cv::Point_<int>' to 'const cv::FileNodeIterator' for 1st argument
+ptrdiff_t operator - (const FileNodeIterator& it1, const FileNodeIterator& it2)
+          ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\iterator:788:1: note: candidate template ignored: could not match 'reverse_iterator' against 'Point_'
+operator-(const reverse_iterator<_Iter1>& __x, const reverse_iterator<_Iter2>& __y)
+^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\iterator:1224:1: note: candidate template ignored: could not match 'move_iterator' against 'Point_'
+operator-(const move_iterator<_Iter1>& __x, const move_iterator<_Iter2>& __y)
+^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\iterator:1632:1: note: candidate template ignored: could not match '__wrap_iter' against 'Point_'
+operator-(const __wrap_iter<_Iter1>& __x, const __wrap_iter<_Iter2>& __y) _NOEXCEPT
+^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\string:558:11: note: candidate template ignored: could not match 'fpos' against 'Point_'
+streamoff operator-(const fpos<_StateT>& __x, const fpos<_StateT>& __y)
+          ^
+../../../../../include\opencv2/core/matx.hpp:1216:17: note: candidate template ignored: could not match 'Matx' against 'Point_'
+Matx<_Tp, m, n> operator - (const Matx<_Tp, m, n>& a, const Matx<_Tp, m, n>& b)
+                ^
+../../../../../include\opencv2/core/matx.hpp:1372:14: note: candidate template ignored: could not match 'Vec' against 'Point_'
+Vec<_Tp, cn> operator - (const Vec<_Tp, cn>& a, const Vec<_Tp, cn>& b)
+             ^
+../../../../../include\opencv2/core/types.hpp:1038:14: note: candidate template ignored: could not match 'Complex' against 'Point_'
+Complex<_Tp> operator - (const Complex<_Tp>& a, const Complex<_Tp>& b)
+             ^
+../../../../../include\opencv2/core/types.hpp:1081:14: note: candidate template ignored: could not match 'Complex' against 'Point_'
+Complex<_Tp> operator - (const Complex<_Tp>& a, _Tp b)
+             ^
+../../../../../include\opencv2/core/types.hpp:1091:14: note: candidate template ignored: could not match 'Complex<type-parameter-0-0>' against 'int'
+Complex<_Tp> operator - (_Tp b, const Complex<_Tp>& a)
+             ^
+../../../../../include\opencv2/core/types.hpp:1323:13: note: candidate template ignored: could not match 'Point_<type-parameter-0-0>' against 'int'
+Point_<_Tp> operator - (const Point_<_Tp>& a, const Point_<_Tp>& b)
+            ^
+../../../../../include\opencv2/core/types.hpp:1592:14: note: candidate template ignored: could not match 'Point3_' against 'Point_'
+Point3_<_Tp> operator - (const Point3_<_Tp>& a, const Point3_<_Tp>& b)
+             ^
+../../../../../include\opencv2/core/types.hpp:1799:12: note: candidate template ignored: could not match 'Size_' against 'Point_'
+Size_<_Tp> operator - (const Size_<_Tp>& a, const Size_<_Tp>& b)
+           ^
+../../../../../include\opencv2/core/types.hpp:2002:12: note: candidate template ignored: could not match 'Rect_' against 'Point_'
+Rect_<_Tp> operator - (const Rect_<_Tp>& a, const Point_<_Tp>& b)
+           ^
+../../../../../include\opencv2/core/types.hpp:2014:12: note: candidate template ignored: could not match 'Rect_' against 'Point_'
+Rect_<_Tp> operator - (const Rect_<_Tp>& a, const Size_<_Tp>& b)
+           ^
+../../../../../include\opencv2/core/types.hpp:2309:14: note: candidate template ignored: could not match 'Scalar_' against 'Point_'
+Scalar_<_Tp> operator - (const Scalar_<_Tp>& a, const Scalar_<_Tp>& b)
+             ^
+../../../../../include\opencv2/core/mat.hpp:3619:9: note: candidate template ignored: could not match 'Matx<type-parameter-0-0, m, n>' against 'int'
+MatExpr operator - (const Mat& a, const Matx<_Tp, m, n>& b) { return a - Mat(b); }
+        ^
+../../../../../include\opencv2/core/mat.hpp:3621:9: note: candidate template ignored: could not match 'Matx' against 'Point_'
+MatExpr operator - (const Matx<_Tp, m, n>& a, const Mat& b) { return Mat(a) - b; }
+        ^
+../../../../../include\opencv2/core/mat.inl.hpp:2601:24: note: candidate template ignored: could not match 'MatConstIterator_' against 'Point_'
+MatConstIterator_<_Tp> operator - (const MatConstIterator_<_Tp>& a, ptrdiff_t ofs)
+                       ^
+../../../../../include\opencv2/core/mat.inl.hpp:2738:19: note: candidate template ignored: could not match 'MatIterator_' against 'Point_'
+MatIterator_<_Tp> operator - (const MatIterator_<_Tp>& a, ptrdiff_t ofs)
+                  ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\complex:561:1: note: candidate template ignored: could not match 'complex' against 'Point_'
+operator-(const complex<_Tp>& __x, const complex<_Tp>& __y)
+^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\complex:571:1: note: candidate template ignored: could not match 'complex' against 'Point_'
+operator-(const complex<_Tp>& __x, const _Tp& __y)
+^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\complex:581:1: note: candidate template ignored: could not match 'complex<type-parameter-0-0>' against 'int'
+operator-(const _Tp& __x, const complex<_Tp>& __y)
+^
+../../../../../include\opencv2/core/core_c.h:3098:41: note: candidate template ignored: could not match 'SeqIterator' against 'Point_'
+template<typename _Tp> inline ptrdiff_t operator - (const SeqIterator<_Tp>& a,
+                                        ^
+../../../../../include\opencv2/core/matx.hpp:1310:17: note: candidate function template not viable: requires single argument 'a', but 2 arguments were provided
+Matx<_Tp, m, n> operator - (const Matx<_Tp, m, n>& a)
+                ^
+../../../../../include\opencv2/core/matx.hpp:1483:14: note: candidate function template not viable: requires single argument 'a', but 2 arguments were provided
+Vec<_Tp, cn> operator - (const Vec<_Tp, cn>& a)
+             ^
+../../../../../include\opencv2/core/types.hpp:1051:14: note: candidate function template not viable: requires single argument 'a', but 2 arguments were provided
+Complex<_Tp> operator - (const Complex<_Tp>& a)
+             ^
+../../../../../include\opencv2/core/types.hpp:1329:13: note: candidate function template not viable: requires single argument 'a', but 2 arguments were provided
+Point_<_Tp> operator - (const Point_<_Tp>& a)
+            ^
+../../../../../include\opencv2/core/types.hpp:1598:14: note: candidate function template not viable: requires single argument 'a', but 2 arguments were provided
+Point3_<_Tp> operator - (const Point3_<_Tp>& a)
+             ^
+../../../../../include\opencv2/core/types.hpp:2333:14: note: candidate function template not viable: requires single argument 'a', but 2 arguments were provided
+Scalar_<_Tp> operator - (const Scalar_<_Tp>& a)
+             ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\complex:740:1: note: candidate function template not viable: requires single argument '__x', but 2 arguments were provided
+operator-(const complex<_Tp>& __x)
+^
+../../../../../include\opencv2/core/mat.hpp:3623:20: note: candidate function not viable: requires single argument 'm', but 2 arguments were provided
+CV_EXPORTS MatExpr operator - (const Mat& m);
+                   ^
+../../../../../include\opencv2/core/mat.hpp:3624:20: note: candidate function not viable: requires single argument 'e', but 2 arguments were provided
+CV_EXPORTS MatExpr operator - (const MatExpr& e);
+                   ^
+In file included from C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/main.cpp:7:
+In file included from C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/gaussian.cpp:1:
+In file included from ../../../../../include\opencv2/opencv.hpp:52:
+In file included from ../../../../../include\opencv2/core.hpp:52:
+In file included from ../../../../../include\opencv2/core/cvdef.h:746:
+In file included from C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\array:111:
+In file included from C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\algorithm:643:
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\memory:1825:31: error: no viable conversion from 'std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > >' to 'int'
+            ::new((void*)__p) _Up(_VSTD::forward<_Args>(__args)...);
+                              ^   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\memory:1717:18: note: in instantiation of function template specialization 'std::__ndk1::allocator<std::__ndk1::__tree_node<int, void *> >::construct<int, std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > &>' requested here
+            {__a.construct(__p, _VSTD::forward<_Args>(__args)...);}
+                 ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\memory:1560:14: note: in instantiation of function template specialization 'std::__ndk1::allocator_traits<std::__ndk1::allocator<std::__ndk1::__tree_node<int, void *> > >::__construct<int, std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > &>' requested here
+            {__construct(__has_construct<allocator_type, _Tp*, _Args...>(),
+             ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\__tree:2191:20: note: in instantiation of function template specialization 'std::__ndk1::allocator_traits<std::__ndk1::allocator<std::__ndk1::__tree_node<int, void *> > >::construct<int, std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > &>' requested here
+    __node_traits::construct(__na, _NodeTypes::__get_ptr(__h->__value_), _VSTD::forward<_Args>(__args)...);
+                   ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\__tree:2169:29: note: in instantiation of function template specialization 'std::__ndk1::__tree<int, std::__ndk1::less<int>, std::__ndk1::allocator<int> >::__construct_node<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > &>' requested here
+        __node_holder __h = __construct_node(_VSTD::forward<_Args>(__args)...);
+                            ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\__tree:1252:14: note: in instantiation of function template specialization 'std::__ndk1::__tree<int, std::__ndk1::less<int>, std::__ndk1::allocator<int> >::__emplace_hint_unique_key_args<int, std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > &>' requested here
+      return __emplace_hint_unique_key_args(__p, __x.first, _VSTD::forward<_Pp>(__x));
+             ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\__tree:1213:16: note: in instantiation of function template specialization 'std::__ndk1::__tree<int, std::__ndk1::less<int>, std::__ndk1::allocator<int> >::__emplace_hint_unique_extract_key<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > &>' requested here
+        return __emplace_hint_unique_extract_key(__p, _VSTD::forward<_Pp>(__x),
+               ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\__tree:1307:16: note: in instantiation of function template specialization 'std::__ndk1::__tree<int, std::__ndk1::less<int>, std::__ndk1::allocator<int> >::__emplace_hint_unique<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > &>' requested here
+        return __emplace_hint_unique(__p, _VSTD::forward<_Vp>(__v));
+               ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\set:667:25: note: in instantiation of function template specialization 'std::__ndk1::__tree<int, std::__ndk1::less<int>, std::__ndk1::allocator<int> >::__insert_unique<std::__ndk1::pair<const int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > > &, void>' requested here
+                __tree_.__insert_unique(__e, *__f);
+                        ^
+C:/Users/sujiv/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1\set:509:13: note: in instantiation of function template specialization 'std::__ndk1::set<int, std::__ndk1::less<int>, std::__ndk1::allocator<int> >::insert<std::__ndk1::__map_iterator<std::__ndk1::__tree_iterator<std::__ndk1::__value_type<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > >, std::__ndk1::__tree_node<std::__ndk1::__value_type<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > >, void *> *, long> > >' requested here
+            insert(__f, __l);
+            ^
+C:/Users/sujiv/Documents/design-project-ocr/ocr_speech/lib/opencv-cpp/crop.cpp:186:18: note: in instantiation of function template specialization 'std::__ndk1::set<int, std::__ndk1::less<int>, std::__ndk1::allocator<int> >::set<std::__ndk1::__map_iterator<std::__ndk1::__tree_iterator<std::__ndk1::__value_type<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > >, std::__ndk1::__tree_node<std::__ndk1::__value_type<int, std::__ndk1::vector<int, std::__ndk1::allocator<int> > >, void *> *, long> > >' requested here
+        set<int> s1(l1.begin(), l1.end());
+                 ^
+18 errors generated.
+ninja: build stopped: subcommand failed.

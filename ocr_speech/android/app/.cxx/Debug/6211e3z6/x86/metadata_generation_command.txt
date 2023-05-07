@@ -1,0 +1,25 @@
+                    Executable : C:\Users\sujiv\AppData\Local\Android\sdk\cmake\3.18.1\bin\cmake.exe
+arguments : 
+-HC:\Users\sujiv\Documents\design-project-ocr\ocr_speech\android\app
+-DCMAKE_SYSTEM_NAME=Android
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_SYSTEM_VERSION=21
+-DANDROID_PLATFORM=android-21
+-DANDROID_ABI=x86
+-DCMAKE_ANDROID_ARCH_ABI=x86
+-DANDROID_NDK=C:\Users\sujiv\AppData\Local\Android\sdk\ndk\21.1.6352462
+-DCMAKE_ANDROID_NDK=C:\Users\sujiv\AppData\Local\Android\sdk\ndk\21.1.6352462
+-DCMAKE_TOOLCHAIN_FILE=C:\Users\sujiv\AppData\Local\Android\sdk\ndk\21.1.6352462\build\cmake\android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=C:\Users\sujiv\AppData\Local\Android\sdk\cmake\3.18.1\bin\ninja.exe
+-DCMAKE_CXX_FLAGS=-frtti -fexceptions -std=c++17
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=C:\Users\sujiv\Documents\design-project-ocr\ocr_speech\build\app\intermediates\cxx\Debug\6211e3z6\obj\x86
+-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=C:\Users\sujiv\Documents\design-project-ocr\ocr_speech\build\app\intermediates\cxx\Debug\6211e3z6\obj\x86
+-DCMAKE_BUILD_TYPE=Debug
+-BC:\Users\sujiv\Documents\design-project-ocr\ocr_speech\android\app\.cxx\Debug\6211e3z6\x86
+-GNinja
+-DANDROID_STL=c++_shared
+jvmArgs : 
+
+
+                    Build command args: []
+                    Version: 2

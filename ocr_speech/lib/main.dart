@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 // import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
@@ -12,6 +10,19 @@ import 'package:flutter/services.dart';
 import 'package:ocr_speech/pages/speech_page.dart';
 import 'package:ocr_speech/pages/responsive.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
+
+import 'dart:async';
+import 'package:edge_detection/edge_detection.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import 'dart:ffi';
+import 'package:ffi/ffi.dart';
+import 'dart:io';
+import 'pages/test.dart';
+import 'package:image/image.dart' as img;
+
 
 void main() {
   runApp(const MyApp());
@@ -55,6 +66,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   String scannedText = "";
   late Responsive responsive;
   bool _canVibrate = true;
+  String? _imagePath;
+
+  final dylib = Platform.isAndroid
+      ? DynamicLibrary.open("libOpenCV_ffi.so")
+      : DynamicLibrary.process();
+
+  final ImagePicker _picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -96,10 +114,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0)),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             Vibration("Medium");
-
-                            getImage(ImageSource.camera, "document");
+                            //intital function
+                            // getImage(ImageSource.camera, "document");
+                            //edge detection pacakge
+                            // getImage2();
+                            //testing opencv
+                            getImage3();
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
@@ -264,12 +286,90 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     );
   }
 
+  // Future<String> get _localPath async {
+  //   final directory = await getApplicationDocumentsDirectory();
+
+  //   return directory.path;
+  // }
+
+  // Future<XFile> get _localFile async {
+  //   final path = _imagePath;
+  //   return XFile(path!);
+  // }
+
+//testing opencv
+  Future<void> getImage3() async {
+    Image ?img;
+    final imageFile = await _picker.pickImage(source: ImageSource.gallery);
+    final imagepth = imageFile?.path.toNativeUtf8() ?? "none".toNativeUtf8();
+    final crop = dylib.lookupFunction<Void Function(Pointer<Utf8>),
+        void Function(Pointer<Utf8>)>('cropImage');
+    crop(imagepth);
+    setState(() {
+      img = Image.file(File(imagepth.toDartString()));
+    });
+    Navigator.push(
+        this.context,
+        MaterialPageRoute(
+            builder: (context) => TakePictureScreen(image: img)));
+  }
+//edge detection pacakage
+  Future<void> getImage2() async {
+    bool isCameraGranted = await Permission.camera.request().isGranted;
+    if (!isCameraGranted) {
+      isCameraGranted =
+          await Permission.camera.request() == PermissionStatus.granted;
+    }
+
+    if (!isCameraGranted) {
+      // Have not permission to camera
+      return;
+    }
+
+// Generate filepath for saving
+    String imagePath = join((await getApplicationSupportDirectory()).path,
+        "${(DateTime.now().millisecondsSinceEpoch / 1000).round()}.jpeg");
+
+    try {
+      //Make sure to await the call to detectEdge.
+      bool success = await EdgeDetection.detectEdge(
+        imagePath,
+        canUseGallery: true,
+        androidScanTitle: 'Scanning', // use custom localizations for android
+        androidCropTitle: 'Crop',
+        androidCropBlackWhiteTitle: 'Black White',
+        androidCropReset: 'Reset',
+      );
+    } catch (e) {
+      print(e);
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _imagePath = imagePath;
+      // _localPath = _imagePath;
+      // print(_imagePath);
+    });
+    final pickedimage = XFile(_imagePath!);
+    predictImage(pickedimage);
+  }
+//intital function
   void getImage(ImageSource source, String type) async {
     try {
       final pickedImage = await ImagePicker().pickImage(source: source);
+      // final edgeDetectedFile =
+      //     await EdgeDetection.detectEdge(pickedImage!.path);
+      // final edgeDetectedFile = await EdgeDetector.detectEdge(
+      //   imageFile: _imageFile, method: EdgeDetectorMethod.Canny);
       // final filePath = pickedImage?.path;
       // EdgeDetectionResult result = await EdgeDetector().detectEdges(filePath);
       // print(result);
+
+      
       if (pickedImage != null) {
         textScanning = true;
         imageFile = pickedImage;
@@ -331,7 +431,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         asynch: true // defaults to true
         );
     _recognitions = recognitions ?? [];
-    // print(_recognitions);
+    print(_recognitions);
     if (_recognitions[0]['label'].toString() == "BLUR") {
       // _selected0 = "BLUR";
       val0 = '${(_recognitions[0]["confidence"] * 100)}';
@@ -436,7 +536,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     } else {
       getSpeech("Text Found. Moving to next screen");
       if (!mounted) return;
-      Navigator.pushNamed(context, '/speech',
+      Navigator.pushNamed(this.context, '/speech',
           arguments: {"text": scannedText, "ismale": ismale});
     }
 
@@ -509,7 +609,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       });
     });
 
-    final args = (ModalRoute.of(context)?.settings.arguments ??
+    final args = (ModalRoute.of(this.context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     print('args $args');
     setState(() {
