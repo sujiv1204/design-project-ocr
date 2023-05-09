@@ -1,1 +1,2 @@
+BLUR
 SHARP

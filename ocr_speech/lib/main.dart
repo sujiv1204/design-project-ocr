@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
 // import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
@@ -12,17 +14,16 @@ import 'package:ocr_speech/pages/responsive.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 
 import 'dart:async';
-import 'package:edge_detection/edge_detection.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
+// import 'package:edge_detection/edge_detection.dart';
+// import 'package:path/path.dart';
+// import 'package:path_provider/path_provider.dart';
+// import 'package:permission_handler/permission_handler.dart';
 
 import 'dart:ffi';
 import 'package:ffi/ffi.dart';
 import 'dart:io';
 import 'pages/test.dart';
 import 'package:image/image.dart' as img;
-
 
 void main() {
   runApp(const MyApp());
@@ -55,24 +56,153 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+class ProcessImageArguments {
+  final String inputPath;
+
+  ProcessImageArguments(this.inputPath);
+}
+
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   bool ismale = true;
   bool _busy = false;
   FlutterTts ftts = FlutterTts();
   bool textScanning = false;
+  bool _isProcessed = false;
+  bool _isWorking = false;
 
   XFile? imageFile;
 
   String scannedText = "";
   late Responsive responsive;
   bool _canVibrate = true;
-  String? _imagePath;
+  late String _imagePath;
+  late String _normalizePath;
 
   final dylib = Platform.isAndroid
       ? DynamicLibrary.open("libOpenCV_ffi.so")
       : DynamicLibrary.process();
 
   final ImagePicker _picker = ImagePicker();
+
+  Future<void> processImg() async {
+    final imageFile = await _picker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 1080,
+      maxHeight: 1920,
+    );
+
+    setState(() {
+      // _isWorking = true;
+      textScanning = true;
+    });
+    final imagePath = imageFile!.path;
+
+    final port = ReceivePort();
+    final args2 = ProcessImageArguments(imagePath);
+
+    Isolate.spawn<ProcessImageArguments>(
+      processImage,
+      args2,
+      onError: port.sendPort,
+      onExit: port.sendPort,
+    );
+
+    late StreamSubscription sub;
+    sub = port.listen((_) async {
+      await sub.cancel();
+
+      setState(() {
+        // _isProcessed = true;
+        // _isWorking = false;
+        // textScanning = false;
+        print("2 done");
+        _imagePath = imagePath;
+        // Navigator.push(
+        //     this.context,
+        //     MaterialPageRoute(
+        //         builder: (context) => TakePictureScreen(
+        //                 image: Image.file(
+        //               File(_imagePath!),
+        //               alignment: Alignment.center,
+        //             ))));
+        predictImage(XFile(_imagePath), "document");
+        // currencyProcessing(XFile(_imagePath));
+      });
+    });
+  }
+
+  // Future<void> normalizeImg() async {
+  //   final imageFile = await _picker.pickImage(
+  //     source: ImageSource.camera,
+  //     maxWidth: 1080,
+  //     maxHeight: 1920,
+  //   );
+
+  //   setState(() {
+  //     // _isWorking = true;
+  //     textScanning = true;
+  //   });
+  //   final imagePath = imageFile!.path;
+
+  //   final port = ReceivePort();
+  //   final args = ProcessImageArguments(imagePath);
+
+  //   Isolate.spawn<ProcessImageArguments>(
+  //     normalizeImage,
+  //     args,
+  //     onError: port.sendPort,
+  //     onExit: port.sendPort,
+  //   );
+
+  //   late StreamSubscription sub;
+  //   sub = port.listen((_) async {
+  //     await sub.cancel();
+
+  //     setState(() {
+  //       // _isProcessed = true;
+  //       // _isWorking = false;
+  //       // textScanning = false;
+  //       print("normalize done");
+  //       _normalizePath = imagePath;
+  //       // Navigator.push(
+  //       //     this.context,
+  //       //     MaterialPageRoute(
+  //       //         builder: (context) => TakePictureScreen(
+  //       //                 image: Image.file(
+  //       //               File(_imagePath!),
+  //       //               alignment: Alignment.center,
+  //       //             ))));
+  //       // predictImage(XFile(_imagePath), "document");
+  //       currencyProcessing(XFile(_normalizePath));
+  //     });
+  //   });
+  // }
+
+  static void processImage(ProcessImageArguments args) {
+    final dylib = Platform.isAndroid
+        ? DynamicLibrary.open("libOpenCV_ffi.so")
+        : DynamicLibrary.process();
+
+    final imagePath = args.inputPath.toNativeUtf8();
+    final _processImage = dylib.lookupFunction<Void Function(Pointer<Utf8>),
+        void Function(Pointer<Utf8>)>('cropImage');
+    _processImage(imagePath);
+
+    calloc.free(imagePath);
+  }
+
+  // static void normalizeImage(ProcessImageArguments args) {
+  //   final dylib = Platform.isAndroid
+  //       ? DynamicLibrary.open("libOpenCV_ffi.so")
+  //       : DynamicLibrary.process();
+
+  //   final imagePath = args.inputPath.toNativeUtf8();
+  //   final _normalizeImage = dylib.lookupFunction<Void Function(Pointer<Utf8>),
+  //       void Function(Pointer<Utf8>)>('normalizeImage');
+  //   _normalizeImage(imagePath);
+
+  //   calloc.free(imagePath);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +220,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 if (textScanning) const CircularProgressIndicator(),
+
                 // if (!textScanning && imageFile == null)
                 //   Container(
                 //     width: 300,
@@ -121,7 +252,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                             //edge detection pacakge
                             // getImage2();
                             //testing opencv
-                            getImage3();
+                            // getImage3();
+                            processImg();
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
@@ -163,6 +295,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                               onPressed: () {
                                 Vibration("Medium");
                                 getImage(ImageSource.camera, "currency");
+                                // normalizeImg();
+                                // processImg();
                               },
                               child: Container(
                                 margin: const EdgeInsets.symmetric(
@@ -286,21 +420,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     );
   }
 
-  // Future<String> get _localPath async {
-  //   final directory = await getApplicationDocumentsDirectory();
-
-  //   return directory.path;
-  // }
-
-  // Future<XFile> get _localFile async {
-  //   final path = _imagePath;
-  //   return XFile(path!);
-  // }
-
 //testing opencv
   Future<void> getImage3() async {
-    Image ?img;
-    final imageFile = await _picker.pickImage(source: ImageSource.gallery);
+    Image? img;
+    final imageFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1080,
+      maxHeight: 1920,
+    );
     final imagepth = imageFile?.path.toNativeUtf8() ?? "none".toNativeUtf8();
     final crop = dylib.lookupFunction<Void Function(Pointer<Utf8>),
         void Function(Pointer<Utf8>)>('cropImage');
@@ -308,68 +435,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     setState(() {
       img = Image.file(File(imagepth.toDartString()));
     });
-    Navigator.push(
-        this.context,
-        MaterialPageRoute(
-            builder: (context) => TakePictureScreen(image: img)));
+    Navigator.push(this.context,
+        MaterialPageRoute(builder: (context) => TakePictureScreen(image: img)));
   }
-//edge detection pacakage
-  Future<void> getImage2() async {
-    bool isCameraGranted = await Permission.camera.request().isGranted;
-    if (!isCameraGranted) {
-      isCameraGranted =
-          await Permission.camera.request() == PermissionStatus.granted;
-    }
 
-    if (!isCameraGranted) {
-      // Have not permission to camera
-      return;
-    }
-
-// Generate filepath for saving
-    String imagePath = join((await getApplicationSupportDirectory()).path,
-        "${(DateTime.now().millisecondsSinceEpoch / 1000).round()}.jpeg");
-
-    try {
-      //Make sure to await the call to detectEdge.
-      bool success = await EdgeDetection.detectEdge(
-        imagePath,
-        canUseGallery: true,
-        androidScanTitle: 'Scanning', // use custom localizations for android
-        androidCropTitle: 'Crop',
-        androidCropBlackWhiteTitle: 'Black White',
-        androidCropReset: 'Reset',
-      );
-    } catch (e) {
-      print(e);
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _imagePath = imagePath;
-      // _localPath = _imagePath;
-      // print(_imagePath);
-    });
-    final pickedimage = XFile(_imagePath!);
-    predictImage(pickedimage);
-  }
 //intital function
   void getImage(ImageSource source, String type) async {
     try {
       final pickedImage = await ImagePicker().pickImage(source: source);
-      // final edgeDetectedFile =
-      //     await EdgeDetection.detectEdge(pickedImage!.path);
-      // final edgeDetectedFile = await EdgeDetector.detectEdge(
-      //   imageFile: _imageFile, method: EdgeDetectorMethod.Canny);
-      // final filePath = pickedImage?.path;
-      // EdgeDetectionResult result = await EdgeDetector().detectEdges(filePath);
-      // print(result);
 
-      
       if (pickedImage != null) {
         textScanning = true;
         imageFile = pickedImage;
@@ -421,7 +495,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   String val1 = "";
 
   classify(XFile image, String type) async {
-    loadModel(1);
+    await loadModel(1);
     var recognitions = await Tflite.runModelOnImage(
         path: image.path, // required
         imageMean: 0.0, // defaults to 117.0
@@ -471,7 +545,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   double? ocrRes;
   documentProcessing(XFile image) async {
-    loadModel(2);
+    await loadModel(2);
     var recognitions = await Tflite.runModelOnImage(
         path: image.path, // required
         imageMean: 0.0, // defaults to 117.0
@@ -483,7 +557,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     _recognitions = recognitions ?? [];
     ocrRes = _recognitions[0]["confidence"] * 100;
     print(ocrRes);
-    if (ocrRes! > 60) {
+    if (ocrRes! > 20) {
       getRecognisedText(image);
     } else {
       scannedText = "Please take picture again";
@@ -495,13 +569,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   String currency = "";
   currencyProcessing(XFile image) async {
-    loadModel(3);
+    await loadModel(3);
+    // print("currency loded");
     var recognitions = await Tflite.runModelOnImage(
         path: image.path, // required
         imageMean: 0.0, // defaults to 117.0
         imageStd: 255.0, // defaults to 1.0
-        numResults: 2, // defaults to 5
-        threshold: 0.2, // defaults to 0.1
+        numResults: 6, // defaults to 5
+        threshold: 0.0, // defaults to 0.1
         asynch: true // defaults to true
         );
     _recognitions = recognitions ?? [];
@@ -531,8 +606,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     textScanning = false;
     // getSpeech(scannedText);
     if (scannedText == "") {
-      scannedText = "No text found. Please take picture again";
-      getSpeech("No text found. Please take picture again");
+      scannedText = "Please take picture again";
+      getSpeech("Please take picture again");
     } else {
       getSpeech("Text Found. Moving to next screen");
       if (!mounted) return;
